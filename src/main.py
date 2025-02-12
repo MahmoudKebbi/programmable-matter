@@ -1,5 +1,6 @@
 from src.grid import Grid
 from src.visualizer import Visualizer
+import unittest
 
 
 def main():
@@ -19,4 +20,10 @@ def main():
 
 
 if __name__ == "__main__":
+    # Set the correct start directory for test discovery
+    loader = unittest.TestLoader()
+    suite = loader.discover(start_dir="tests", pattern="test*.py")
+    runner = unittest.TextTestRunner()
+    runner.run(suite)
+
     main()
