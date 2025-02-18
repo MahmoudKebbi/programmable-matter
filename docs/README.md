@@ -8,6 +8,7 @@ This project implements a simulation of programmable matter using Python, NumPy,
 - Real-time visualization and user interaction.
 
 ## Project Structure
+```
 📂 programmable_matter_project/
 │── 📂 src/                      # Source code directory
 │   │── 📜 main.py               # Entry point to run the simulation
@@ -21,11 +22,8 @@ This project implements a simulation of programmable matter using Python, NumPy,
 │── 📂 docs/                     # Documentation directory (for future use)
 │── 📜 README.md                 # Project overview and instructions
 │── 📜 requirements.txt          # Dependencies (Pygame, NumPy)
+```
 
-
-markdown
-Copy
-Edit
 
 1. Install dependencies:
    ```bash
