@@ -141,7 +141,7 @@ class Grid:
         Returns:
             bool: True if the move is applied successfully, False if it is invalid.
         """
-        # Create new positions; elements not specified in moves remain stationary.
+        # Calculate new positions.
         new_positions = []
         for i, (x, y) in enumerate(self.matter_elements):
             dx, dy = moves.get(i, (0, 0))
@@ -156,10 +156,10 @@ class Grid:
         # Temporarily update and check connectivity.
         original_positions = self.matter_elements.copy()
         self.matter_elements = new_positions
-        if not self.is_connected():
-            self.matter_elements = original_positions  # Revert changes.
-            print("Invalid individual move: move breaks connectivity.")
-            return False
+        # if not self.is_connected():
+        #     self.matter_elements = original_positions  # Revert changes.
+        #     print("Invalid individual move: move breaks connectivity.")
+        #     return False
 
         # Update the grid.
         self.grid.fill(0)
