@@ -146,9 +146,7 @@ class AI_Agent:
         self.start_state = start_state
         self.target_state = target_state
 
-
-
-    def plan(self) -> Optional[List[Tuple[int, int, int]]]:
+    def plan(self) -> Optional[List[List[Tuple[int, int, int]]]]:
         """
         Uses A* search to plan a sequence of moves to transform the shape.
         Prioritizes moves that shift multiple blocks together.
@@ -157,7 +155,9 @@ class AI_Agent:
         target = tuple(sorted(self.target_state))
 
         frontier = []
-        heapq.heappush(frontier, (heuristic(self.start_state, self.target_state), 0, start, []))
+        heapq.heappush(
+            frontier, (heuristic(self.start_state, self.target_state), 0, start, [])
+        )
         explored = set()
 
         while frontier:
@@ -172,15 +172,25 @@ class AI_Agent:
             explored.add(current)
 
             # **Ensure that successors favor group moves first**
-            successors = sorted(get_successors(list(current), self.n, self.m), key=lambda s: -len(s[1]))
+            successors = sorted(
+                get_successors(list(current), self.n, self.m), key=lambda s: -len(s[1])
+            )
 
             for succ, moves in successors:
                 succ_tuple = tuple(sorted(succ))
                 if succ_tuple in explored:
                     continue
                 new_cost = cost + 1
-                new_path = path + moves
-                heapq.heappush(frontier, (new_cost + heuristic(succ, list(target)), new_cost, succ_tuple, new_path))
+                new_path = path + [moves]  # Group moves together
+                heapq.heappush(
+                    frontier,
+                    (
+                        new_cost + heuristic(succ, list(target)),
+                        new_cost,
+                        succ_tuple,
+                        new_path,
+                    ),
+                )
 
         return None
 

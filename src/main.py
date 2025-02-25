@@ -13,7 +13,7 @@ def main():
     Initializes a 10x10 grid with a starting shape and a target shape.
     """
     n, m = 10, 10
-    start_positions = [(4, 4), (4, 5), (5, 4), (5, 5)]  # 2x2 starting shape
+    start_positions = [(9, 0), (9, 1), (9, 2), (9, 3)]  # 2x2 starting shape
     target_positions = [(2, 2), (2, 3), (2, 4), (3, 3)]  # AI will try to move here
 
     grid = Grid(n, m, start_positions)

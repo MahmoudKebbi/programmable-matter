@@ -99,10 +99,10 @@ class Visualizer:
                 print(f"Error: Unexpected move format: {move_set}")
                 return
 
-            # **Fix: Group all individual moves into one dictionary**
+            # Group all individual moves into one dictionary
             moves = {i: (dx, dy) for i, dx, dy in move_set}
 
-            # **Print to check grouped moves**
+            # Print to check grouped moves
             print(
                 f"Executing shape-changing move {self.ai_step + 1}/{len(self.ai_plan)}: {moves}"
             )
@@ -159,6 +159,7 @@ class Visualizer:
                         self.ai_plan = self.ai_agent.plan()
                         if self.ai_plan:
                             print("Executing AI plan...")
+                            print(self.ai_plan)
                             self.mode = "ai"
                             self.ai_step = 0
                         else:
