@@ -34,16 +34,29 @@ This project implements a simulation of programmable matter using Python, NumPy,
     python src/main.py
     ```
 
+
 Controls
+
 Uniform Mode:
+
 Arrow keys: Move up, down, left, right.
+
 Q/E/Z/C: Diagonal moves.
+
+
 Individual Mode:
+
 Tab: Toggle between uniform and individual modes.
+
 R: Cycle to previous block.
+
 F: Cycle to next block.
+
 W/A/S/D: Cardinal moves for the selected block.
+
 Q/E/Z/C: Diagonal moves for the selected block.
+
+**To activate AI mode, press T and let the magic happen**
 
 
 
