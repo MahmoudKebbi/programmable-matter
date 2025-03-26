@@ -149,7 +149,7 @@ def is_state_connected(state):
 
 ## 👥 Contributors
 
-This project was developed as part of the COE 544 course at [Your University].
+This project was developed as part of the COE 544 course at The Lebanese American University.
 
 ## 📄 License
 
