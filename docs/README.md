@@ -10,7 +10,7 @@
 
 Features • Installation • Usage • How It Works • Demo
 
-![Programmable Matter Animation](https://i.imgur.com/VhMPYJI.gif)
+![Programmable Matter Animation](https://i0.wp.com/media3.giphy.com/media/26BoCW1FA2980EaR2/giphy.gif)
 
 </div>
 
@@ -139,14 +139,6 @@ def is_state_connected(state):
 └── 📜 requirements.txt          # Dependencies
 ```
 
-## 🔍 Demo
-
-Watch as our simulation transforms a simple rectangle into a complex structure while maintaining connectivity:
-
-<div align="center">
-  <img src="https://i.imgur.com/VhMPYJI.gif" alt="Shape Transformation Demo" width="600"/>
-  <p><i>A 30-block configuration transforming into a target shape</i></p>
-</div>
 
 ## 🚀 Future Work
 
