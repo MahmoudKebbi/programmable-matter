@@ -14,22 +14,22 @@ class Grid:
     """
 
     def __init__(self, n: int, m: int, initial_positions: list):
-        """
-        Initializes the grid with given dimensions and places matter elements.
 
-        Args:
-            n (int): Number of rows.
-            m (int): Number of columns.
-            initial_positions (list of tuple): List of (x, y) coordinates for matter elements.
-        """
         self.n = n
         self.m = m
         self.grid = np.zeros((n, m), dtype=int)
-        self.matter_elements = initial_positions.copy()
+        self.matter_elements = []
 
-        # Place matter elements in the grid
-        for x, y in self.matter_elements:
+        # Validate initial positions
+        seen = set()
+        for x, y in initial_positions:
+            if (x, y) in seen:
+                raise ValueError("Duplicate initial positions.")
+            if not (0 <= x < n and 0 <= y < m):
+                raise ValueError("Initial position out of bounds.")
+            seen.add((x, y))
             self.grid[x, y] = 1
+            self.matter_elements.append((x, y))
 
     def display_grid(self):
         """
@@ -83,8 +83,8 @@ class Grid:
     def is_valid_move(self, dx: int, dy: int) -> bool:
         """
         Checks if moving the entire matter block by (dx, dy) is valid:
-          1. New positions must be within grid boundaries.
-          2. The structure must remain connected.
+        1. New positions must be within grid boundaries.
+        2. The structure must remain connected.
 
         Args:
             dx (int): Change in row direction.
@@ -95,25 +95,57 @@ class Grid:
         """
         new_positions = [(x + dx, y + dy) for x, y in self.matter_elements]
 
-        # Check boundaries.
-        for x, y in new_positions:
-            if not (0 <= x < self.n and 0 <= y < self.m):
-                return False
+        # Check if all new positions are within grid bounds
+        if any(not (0 <= x < self.n and 0 <= y < self.m) for x, y in new_positions):
+            return False
 
-        # Temporarily update positions to check connectivity.
-        original_positions = self.matter_elements.copy()
-        self.matter_elements = new_positions
-        connected = self.is_connected()
-        self.matter_elements = original_positions  # Revert
-        return connected
+        # Check if new positions are unique (no overlaps)
+        if len(set(new_positions)) != len(new_positions):
+            return False
 
-    def move(self, dx: int, dy: int):
+        # Check connectivity without modifying self.matter_elements
+        return self.is_connected_after_move(new_positions)
+
+    def is_connected_after_move(self, new_positions: list) -> bool:
+        """
+        Simulates a move and checks if the new state remains connected.
+        """
+        matter_set = set(new_positions)
+        visited = set()
+        queue = deque([new_positions[0]])  # Start from any matter element
+        visited.add(new_positions[0])
+
+        directions = [
+            (-1, -1),
+            (-1, 0),
+            (-1, 1),
+            (0, -1),
+            (0, 1),
+            (1, -1),
+            (1, 0),
+            (1, 1),
+        ]
+
+        while queue:
+            cx, cy = queue.popleft()
+            for dx, dy in directions:
+                neighbor = (cx + dx, cy + dy)
+                if neighbor in matter_set and neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append(neighbor)
+
+        return len(visited) == len(matter_set)
+
+    def move(self, dx: int, dy: int) -> bool:
         """
         Moves the entire matter block by (dx, dy) if valid (within bounds and preserving connectivity).
 
         Args:
             dx (int): Change in row direction.
             dy (int): Change in column direction.
+
+        Returns:
+            bool: True if move was successful, False otherwise.
         """
         if self.is_valid_move(dx, dy):
             # Clear previous positions.
@@ -126,44 +158,51 @@ class Grid:
             # Write new positions.
             for x, y in self.matter_elements:
                 self.grid[x, y] = 1
+
+            return True  # Move was successful
+
         else:
             print("Invalid move! It would break connectivity or go out of bounds.")
+            return False  # Move failed
 
     def move_individual(self, moves: dict) -> bool:
         """
-        Performs shape-changing moves by moving individual matter elements.
-        The move is specified as a dictionary where keys are indices (of matter_elements)
-        and values are (dx, dy) tuples.
+        Moves individual blocks based on the provided dictionary of moves.
 
         Args:
-            moves (dict): Mapping from matter element index to (dx, dy).
+            moves (dict): Dictionary mapping block indices to (dx, dy) moves.
 
         Returns:
-            bool: True if the move is applied successfully, False if it is invalid.
+            bool: True if move was successful, False otherwise.
         """
-        # Calculate new positions.
         new_positions = []
+        seen = set()
         for i, (x, y) in enumerate(self.matter_elements):
             dx, dy = moves.get(i, (0, 0))
-            new_positions.append((x + dx, y + dy))
+            nx, ny = x + dx, y + dy
 
-        # Check boundaries.
-        for x, y in new_positions:
-            if not (0 <= x < self.n and 0 <= y < self.m):
-                print("Invalid individual move: out of bounds.")
-                return False
+            if (nx, ny) in seen:
+                print("Invalid move: overlapping elements.")
+                return False  # Move is invalid due to overlap
 
-        # Temporarily update and check connectivity.
-        original_positions = self.matter_elements.copy()
+            if not (0 <= nx < self.n and 0 <= ny < self.m):
+                return False  # Move is invalid due to out-of-bounds
+
+            seen.add((nx, ny))
+            new_positions.append((nx, ny))
+
+        new_positions = sorted(new_positions)
+
+        # Check connectivity
+        original = self.matter_elements
         self.matter_elements = new_positions
         if not self.is_connected():
-            self.matter_elements = original_positions  # Revert changes.
-            print("Invalid individual move: move breaks connectivity.")
-            return False
+            self.matter_elements = original  # Revert to original positions
+            return False  # Move is invalid due to breaking connectivity
 
-        # Update the grid.
+        # Update grid
         self.grid.fill(0)
-        for x, y in self.matter_elements:
+        for x, y in new_positions:
             self.grid[x, y] = 1
 
-        return True
+        return True  # Move was successful
