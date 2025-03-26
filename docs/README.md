@@ -10,7 +10,7 @@
 
 Features • Installation • Usage • How It Works • Demo
 
-![Programmable Matter Animation](https://i.imgur.com/VhMPYJI.gif)
+![Programmable Matter Animation](https://i0.wp.com/media3.giphy.com/media/26BoCW1FA2980EaR2/giphy.gif)
 
 </div>
 
