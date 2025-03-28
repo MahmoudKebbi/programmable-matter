@@ -18,10 +18,6 @@ Features • Installation • Usage • How It Works • Demo
 
 This project simulates the fascinating concept of **programmable matter** - material that can change its physical properties on demand. Our implementation uses an advanced AI planning system to reconfigure connected units into target shapes while maintaining connectivity constraints.
 
-```
-"Programmable matter represents the ultimate form of physical computing, where
-the distinction between hardware and software disappears." - AI researcher
-```
 
 ## ✨ Features
 
